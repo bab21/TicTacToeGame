@@ -46,7 +46,7 @@ public class TicTacToe {
 	}
 	
 	//making move...
-	public void makeMove(int position,char value) {
+	private void makeMove(int position,char value) {
 
 		boolean ans=getMakeMove(position);
 		if(ans==true)
@@ -57,12 +57,23 @@ public class TicTacToe {
 	}
 
 	//checking who plays first...
+	private void doToss(String toss_value) {
+		int result=(int)Math.floor(Math.random()*10)%2;
+		if(result==1 && toss_value.equals("head"))
+			System.out.println("User plays first");
+		else 
+			System.out.println("Computer plays first");
+			
+	}
 
 	public static void main(String[] args) {
 		Scanner s=new Scanner(System.in);
 		TicTacToe game = new TicTacToe();
 		game.initializeGame();
 		game.showBoard();
+		
+		System.out.println("Enter toss(head/tail)");
+		game.doToss(s.next());
 		
 		System.out.println("Enter position ");
 		int position=s.nextInt();
