@@ -8,7 +8,9 @@ public class TicTacToeGame {
 		board=new char[4][4];
 	}
 	private void initializeGame() {
-		Arrays.fill(board,' ');
+		for (char[] row : board) 
+            Arrays.fill(row,'.'); 
+		
 	}
 	private char[] takeInput() {
 		Scanner s=new Scanner(System.in);
@@ -26,6 +28,7 @@ public class TicTacToeGame {
 		
 		choice[0]=user_choice;
 		choice[1]=computer_choice;
+		s.close();
 		
 		return choice;	
 	}
