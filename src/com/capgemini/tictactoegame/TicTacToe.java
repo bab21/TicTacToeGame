@@ -34,28 +34,36 @@ public class TicTacToe {
 		System.out.println(board[6]+"|"+board[7]+"|"+board[8]);
 			
 	}
-	private int  makeMove() {
+	private boolean getMakeMove(int position) {
+//		System.out.println("Make your move,Enter the index(1-9)");
+		boolean ans=false;
+		
+		if(board[position-1]!='.') {
+			System.out.println("This position is not empty,Please choose a empty psition");
+			ans=false;
+		}
+		else ans=false;
+		
+		return ans;
+	}
+	public void makeMove() {
 		Scanner s=new Scanner(System.in);
 		System.out.println("Make your move,Enter the index(1-9)");
-		int movePosition=0;
 		int position=s.nextInt();
-		if(board[position-1]!='.')
-			System.out.println("This position is not empty,Please choose a empty psition");
-		else movePosition=position;
-		
-		s.close();
-		return movePosition;
+		boolean ans=getMakeMove(position);
+		if(ans==true);
+			board[position-1]='&';	
 	}
 
 	public static void main(String[] args) {
 		TicTacToe game = new TicTacToe();
 		game.initializeGame();
 		game.showBoard();
-		int movePosition=game.makeMove();
+		game.makeMove();
 		
 //		char userChoice = game.takeInput();
 //		char computerChoice = (userChoice == 'X') ? 'O' : 'X';
-		System.out.println("position you made current move:" + movePosition);
+//		System.out.println("position you made current move:" + movePosition);
 		game.showBoard();
 	}
 }
