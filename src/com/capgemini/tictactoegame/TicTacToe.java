@@ -39,9 +39,9 @@ public class TicTacToe {
 		System.out.println("Make your move,Enter the index(1-9)");
 		int movePosition=0;
 		int position=s.nextInt();
-		if(board[position-1]=='.')
+		if(board[position-1]!='.')
 			System.out.println("This position is not empty,Please choose a empty psition");
-		else movePosition=position-1;
+		else movePosition=position;
 		
 		s.close();
 		return movePosition;
@@ -55,7 +55,7 @@ public class TicTacToe {
 		
 //		char userChoice = game.takeInput();
 //		char computerChoice = (userChoice == 'X') ? 'O' : 'X';
-		System.out.println("Computer choice:" + movePosition);
+		System.out.println("position you made current move:" + movePosition);
 		game.showBoard();
 	}
 }
