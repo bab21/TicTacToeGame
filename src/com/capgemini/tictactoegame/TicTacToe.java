@@ -65,6 +65,28 @@ public class TicTacToe {
 			System.out.println("Computer plays first");
 			
 	}
+	
+	public boolean checkCondition(char c) {
+	
+		if((board[0]==c && board[1]==c && board[2]==c)||
+		  (board[3]==c && board[4]==c && board[5]==c)||
+		  (board[6]==c && board[7]==c && board[8]==c)||
+	      (board[0]==c && board[4]==c && board[8]==c)||
+		  (board[2]==c && board[4]==c && board[6]==c)||
+		  (board[0]==c && board[3]==c && board[6]==c)||
+		  (board[1]==c && board[4]==c && board[7]==c)||
+		  (board[2]==c && board[5]==c && board[8]==c))
+			return true;
+		else return false;
+			
+	}
+	
+	public boolean allFill() {
+		for(int i=0;i<9;i++)
+			if(board[i]=='.')
+				return false;
+		return true;
+	}
 
 	public static void main(String[] args) {
 		Scanner s=new Scanner(System.in);
