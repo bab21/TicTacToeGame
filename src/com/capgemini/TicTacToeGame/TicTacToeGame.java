@@ -12,29 +12,21 @@ public class TicTacToeGame {
             Arrays.fill(row,'.'); 
 		
 	}
-	private char[] takeInput() {
+	private char takeInput() {
 		Scanner s=new Scanner(System.in);
-		char user_choice,computer_choice;
-		char[] choice=new char[2];
+		char user_choice;
 		
 		System.out.println("Pease enter your input(X/O)");
 		user_choice=s.next().charAt(0);
-		computer_choice=' ';
 		
-		if(user_choice=='X')
-			computer_choice='O';
-		else if(user_choice=='O')
-			computer_choice='X';
-		
-		choice[0]=user_choice;
-		choice[1]=computer_choice;
-		s.close();
-		
-		return choice;	
+	    s.close();
+	    return user_choice;	
 	}
 	public static void main(String[] args) {
 		TicTacToeGame game=new TicTacToeGame();
 		game.initializeGame();
-		char[] choice=game.takeInput();
+		char user_choice=game.takeInput();
+		char computer_choice=(user_choice=='X')?'O':'X';
+		System.out.println("computer choice:"+computer_choice);
 	}
 }
