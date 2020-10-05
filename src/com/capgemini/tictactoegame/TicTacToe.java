@@ -8,10 +8,12 @@ public class TicTacToe {
 		board = new char[9];
 	}
 
+	//initializing board..
 	private void initializeGame() {
-			Arrays.fill(board, '.');
+			Arrays.fill(board, '.');	
 	}
 
+	//taking input from user..
 	private char takeInput() {
 		Scanner s = new Scanner(System.in);
 		char userChoice;
@@ -22,7 +24,8 @@ public class TicTacToe {
 		s.close();
 		return userChoice;
 	}
-
+    
+	//presenting current state of board...
 	private void showBoard() {
 		
 		System.out.println("Presenting current state of board");
@@ -34,36 +37,40 @@ public class TicTacToe {
 		System.out.println(board[6]+"|"+board[7]+"|"+board[8]);
 			
 	}
+	
+	//checking if move if valid...
 	private boolean getMakeMove(int position) {
-//		System.out.println("Make your move,Enter the index(1-9)");
-		boolean ans=false;
-		
-		if(board[position-1]!='.') {
-			System.out.println("This position is not empty,Please choose a empty psition");
-			ans=false;
-		}
-		else ans=false;
-		
-		return ans;
+		if(board[position-1]=='.')
+			return true;
+		else return false;
 	}
-	public void makeMove() {
-		Scanner s=new Scanner(System.in);
-		System.out.println("Make your move,Enter the index(1-9)");
-		int position=s.nextInt();
+	
+	//making move...
+	public void makeMove(int position,char value) {
+
 		boolean ans=getMakeMove(position);
-		if(ans==true);
-			board[position-1]='&';	
+		if(ans==true)
+			board[position-1]=value;	
+		else 
+			System.out.println("This position is not empty,choose valid position");
+		
 	}
 
+	//checking who plays first...
+
 	public static void main(String[] args) {
+		Scanner s=new Scanner(System.in);
 		TicTacToe game = new TicTacToe();
 		game.initializeGame();
 		game.showBoard();
-		game.makeMove();
 		
-//		char userChoice = game.takeInput();
-//		char computerChoice = (userChoice == 'X') ? 'O' : 'X';
-//		System.out.println("position you made current move:" + movePosition);
+		System.out.println("Enter position ");
+		int position=s.nextInt();
+		System.out.println("Enter value(X/O)");
+		char value=s.next().charAt(0);
+		
+		
+		game.makeMove(position,value);
 		game.showBoard();
 	}
 }
