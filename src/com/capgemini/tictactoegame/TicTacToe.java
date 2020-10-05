@@ -3,7 +3,13 @@ import java.util.*;
 
 public class TicTacToe {
 	private char[] board;
-
+	private char userSymbol,computerSymbol;
+	public static Scanner s = new Scanner(System.in);
+	
+    private enum PLAYER{
+    	USER,COMPUTER
+    }
+    
 	TicTacToe() {
 		board = new char[9];
 	}
@@ -13,22 +19,27 @@ public class TicTacToe {
 			Arrays.fill(board, '.');	
 	}
 
-	//taking input from user..
-	private char takeInput() {
-		Scanner s = new Scanner(System.in);
-		char userChoice;
+	//determining  input symbol  for user and computer..
+	private void takeInput(PLAYER player) {
 
-		System.out.println("Pease enter your input(X/O)");
-		userChoice = s.next().charAt(0);
+		if(player==PLAYER.USER)
+		{    System.out.println("Pease enter your input(X/O)");
+			 userSymbol = s.next().charAt(0);
+			 computerSymbol=(userSymbol=='X')?'O':'X';
+		}
+		else 
+		{
+			computerSymbol=((int)Math.floor(Math.random()*10)%2)==1?'O':'X';
+			userSymbol=(computerSymbol=='X')?'O':'X';
+		}
 
-		s.close();
-		return userChoice;
+		
 	}
     
 	//presenting current state of board...
 	private void showBoard() {
 		
-		System.out.println("Presenting current state of board");
+		System.out.println("Current state of board");
 		
 		System.out.println(board[0]+"|"+board[1]+"|"+board[2]);
 		System.out.println("______");
@@ -39,34 +50,66 @@ public class TicTacToe {
 	}
 	
 	//checking if move if valid...
-	private boolean getMakeMove(int position) {
+	private boolean validMove(int position) {
 		if(board[position-1]=='.')
 			return true;
+		else {
+			System.out.println("This position is not empty,choose valid position");
+			return false;
+		}
+	}
+	
+	//user making move and  checking if he/she wins
+	private boolean userMakeMove(int position) {
+
+		if(validMove(position))
+			board[position-1]=userSymbol;
+		
+		if(checkWinner(userSymbol)) {
+			System.out.println("User wins..");
+			return true;
+		}
 		else return false;
 	}
-	
-	//making move...
-	private void makeMove(int position,char value) {
 
-		boolean ans=getMakeMove(position);
-		if(ans==true)
-			board[position-1]=value;	
-		else 
-			System.out.println("This position is not empty,choose valid position");
+	//computer makes move and checking if it wins
+	private boolean computerMakeMove() {
+		ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
+		for(int i=0;i<board.length;i++) {
+			if(board[i]=='.')
+				emptyPositions.add(i);
+		}
+		if(emptyPositions.size()==0)
+			return false;
+		
+		int randomIndex = (int) (Math.random() * emptyPositions.size());
+		int position=emptyPositions.get( randomIndex );
+		board[position]=computerSymbol;
+		
+		if(checkWinner(computerSymbol)) {
+			System.out.println("Computer wins..");
+			return true;
+		}
+		else return false;
 		
 	}
-
+	
 	//checking who plays first...
-	private void doToss(String toss_value) {
+	private PLAYER doToss() {
 		int result=(int)Math.floor(Math.random()*10)%2;
-		if(result==1 && toss_value.equals("head"))
+		System.out.println("Toss Result");
+		if(result==1){
 			System.out.println("User plays first");
-		else 
+			return PLAYER.USER;
+			}
+		else {
 			System.out.println("Computer plays first");
-			
+			return PLAYER.COMPUTER;	
+		}
 	}
 	
-	public boolean checkCondition(char c) {
+	//checking for winning condition..
+	private boolean checkWinner(char c) {
 	
 		if((board[0]==c && board[1]==c && board[2]==c)||
 		  (board[3]==c && board[4]==c && board[5]==c)||
@@ -81,29 +124,85 @@ public class TicTacToe {
 			
 	}
 	
-	public boolean allFill() {
-		for(int i=0;i<9;i++)
+	//checking if board is completely filled....
+	private boolean allFill() {
+		
+		for(int i=0;i<board.length;i++)
 			if(board[i]=='.')
 				return false;
+		System.out.println("Entire board is filled");
 		return true;
 	}
 
 	public static void main(String[] args) {
-		Scanner s=new Scanner(System.in);
+		
 		TicTacToe game = new TicTacToe();
+		
 		game.initializeGame();
-		game.showBoard();
-		
-		System.out.println("Enter toss(head/tail)");
-		game.doToss(s.next());
-		
-		System.out.println("Enter position ");
-		int position=s.nextInt();
-		System.out.println("Enter value(X/O)");
-		char value=s.next().charAt(0);
-		
-		
-		game.makeMove(position,value);
-		game.showBoard();
+		System.out.println("Tossing for who plays first");
+	    PLAYER tossWinner=game.doToss();
+	    
+	    boolean userMoveResult,computerMoveResult;
+	    if(tossWinner==PLAYER.USER) {
+	    	game.takeInput(PLAYER.USER);
+	    	while(true) {
+	    		if(game.allFill())
+				{
+					System.out.println("Match draws");
+					return;
+				}
+	    		int position;
+	    		do {
+		    	System.out.println("Enter position(1-9)");
+			    position=s.nextInt();
+			    if(game.allFill())break;
+	    		}while(!game.validMove(position));
+	    		
+			    userMoveResult=game.userMakeMove(position);
+			    System.out.println("After user turn");
+				game.showBoard();
+				if(userMoveResult)
+					break;
+				
+				computerMoveResult=game.computerMakeMove();
+				System.out.println("After computer turn");
+				game.showBoard();
+				if(computerMoveResult)
+					break;
+				
+	    	}
+	    }
+	    else {
+	    	game.takeInput(PLAYER.COMPUTER);
+	    	while(true) {
+	    		if(game.allFill())
+				{
+					System.out.println("Match draws");
+					break;
+				}
+				computerMoveResult=game.computerMakeMove();
+				System.out.println("After computer turn");
+				game.showBoard();
+				if(computerMoveResult)
+					break;
+				int position=0;
+				
+				do {
+				System.out.println("Enter position(1-9) ");
+		        position=s.nextInt();
+		        if(game.allFill())break;
+				}while(!game.validMove(position));
+				
+	
+				userMoveResult=game.userMakeMove(position);
+				System.out.println("After user turn");
+				game.showBoard();
+				if(userMoveResult)
+					break;
+				
+				
+		    }
+	    }
+	    s.close();
 	}
 }
