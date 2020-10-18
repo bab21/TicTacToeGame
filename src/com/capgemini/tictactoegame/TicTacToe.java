@@ -74,12 +74,16 @@ public class TicTacToe {
 
 	//computer makes move and checking if it wins
 	private boolean computerMakeMove() {
-		
-		int blockingPosition=checkBlockingPosition();
 		int position=-1;
 		
-		if(blockingPosition>=0 && blockingPosition<=8)
-			position=blockingPosition;
+		if(checkBlockingPosition(computerSymbol)>=0)
+			position=checkBlockingPosition(computerSymbol);
+		
+		else if(checkBlockingPosition(userSymbol)>=0) {
+			position=checkBlockingPosition(userSymbol);	
+		}
+		else if(getCorner()>=0 && getCorner()<=8)
+			position=getCorner();
 		else {
 			ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
 			for(int i=0;i<board.length;i++) {
@@ -142,39 +146,46 @@ public class TicTacToe {
 		return true;
 	}
 	
+	private int getCorner() {
+		if(board[0]=='.')return 0;
+		if(board[2]=='.')return 2;
+		if(board[6]=='.')return 6;
+		if(board[8]=='.')return 8;
+		return -1;
+	}
 	//check for blocking condition....
-	private int checkBlockingPosition() {
-		if(board[0]=='.' && board[1]==userSymbol && board[2]==userSymbol ||
-				board[0]=='.' && board[3]==userSymbol && board[6]==userSymbol||
-				board[0]=='.' && board[4]==userSymbol && board[8]==userSymbol)
+	private int checkBlockingPosition(char symbol) {
+		if(board[0]=='.' &&  board[1]==symbol &&  board[2]==symbol ||
+				board[0]=='.' &&  board[3]==symbol  && board[6]==symbol||
+				board[0]=='.' &&  board[4]==symbol &&  board[8]==symbol)
 		return 0;
-		if(board[0]==userSymbol && board[1]=='.' && board[2]==userSymbol ||
-				board[1]=='.' && board[4]==userSymbol && board[7]==userSymbol)
+		if(board[0]==symbol && board[1]=='.' && board[2]==symbol ||
+				board[1]=='.' && board[4]==symbol && board[7]==symbol)
 		return 1;
-		if(board[0]==userSymbol && board[1]==userSymbol && board[2]=='.'||
-				board[2]=='.' && board[5]==userSymbol && board[8]==userSymbol)
+		if(board[0]==symbol && board[1]==symbol && board[2]=='.'||
+				board[2]=='.' && board[5]==symbol && board[8]==symbol)
 		return 2;
-		if(board[0]==userSymbol && board[3]=='.' && board[6]==userSymbol ||
-				board[3]=='.' && board[4]==userSymbol && board[5]==userSymbol)
+		if(board[0]==symbol && board[3]=='.' && board[6]==symbol ||
+				board[3]=='.' && board[4]==symbol && board[5]==symbol)
 		return 3;
-		if ((board[1] == userSymbol && board[7] == userSymbol) || (board[3] == userSymbol && board[5] == userSymbol) || (board[0] == userSymbol && board[8] == userSymbol)
-				|| (board[2] == userSymbol && board[6] == userSymbol) && board[4]=='.') {
+		if ((board[1] == symbol && board[7] ==symbol) || (board[3] == symbol && board[5] == symbol) || (board[0] == symbol && board[8] == symbol)
+				|| (board[2] == symbol && board[6] == symbol) && board[4]=='.') {
 				return 4;
 		}
 
-		if ((board[2] == userSymbol && board[8] == userSymbol) || (board[3] == userSymbol && board[4] == userSymbol) && board[5]=='.') {
+		if ((board[2] == symbol && board[8] == symbol) || (board[3] == symbol && board[4] == symbol) && board[5]=='.') {
 				return 5;
 		}
 
-		if ((board[0] == userSymbol && board[3] ==userSymbol ) || (board[7] == userSymbol && board[8] == userSymbol) || (board[4] == userSymbol && board[2] == userSymbol) && board[6]=='.') {
+		if ((board[0] == symbol && board[3] ==symbol ) || (board[7] == symbol && board[8] == symbol) || (board[4] == symbol && board[2] == symbol) && board[6]=='.') {
 				return 6;
 		}
 
-		if ((board[1] == userSymbol && board[4] == userSymbol) || (board[6] == userSymbol && board[8] == userSymbol) && board[7]=='.') {
+		if ((board[1] == symbol && board[4] == symbol) || (board[6] == symbol && board[8] == symbol) && board[7]=='.') {
 				return 7;
 		}
 
-		if ((board[6] == userSymbol && board[7] == userSymbol) || (board[2] == userSymbol && board[5] == userSymbol) || (board[4] == userSymbol && board[0] == userSymbol) && board[8]=='.') {
+		if ((board[6] == symbol && board[7] == symbol) || (board[2] == symbol && board[5] == symbol) || (board[4] == symbol && board[0] == symbol) && board[8]=='.') {
 				return 8;
 		}
 		
