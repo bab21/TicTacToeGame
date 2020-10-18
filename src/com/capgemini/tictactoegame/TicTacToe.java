@@ -84,6 +84,8 @@ public class TicTacToe {
 		}
 		else if(getCorner()>=0 && getCorner()<=8)
 			position=getCorner();
+		else if(getCentre()>0)
+			position=getCentre();
 		else {
 			ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
 			for(int i=0;i<board.length;i++) {
@@ -146,12 +148,19 @@ public class TicTacToe {
 		return true;
 	}
 	
+	//UC 10....
 	private int getCorner() {
 		if(board[0]=='.')return 0;
 		if(board[2]=='.')return 2;
 		if(board[6]=='.')return 6;
 		if(board[8]=='.')return 8;
 		return -1;
+	}
+	
+	//UC 11....
+	private int getCentre() {
+		if(board[4]=='.')return 4;
+		else return -1;
 	}
 	//check for blocking condition....
 	private int checkBlockingPosition(char symbol) {
