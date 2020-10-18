@@ -76,16 +76,17 @@ public class TicTacToe {
 	private boolean computerMakeMove() {
 		int position=-1;
 		
-		if(checkBlockingPosition(computerSymbol)>=0)
-			position=checkBlockingPosition(computerSymbol);
+		int temp=-1;
+		if((temp=checkBlockingPosition(computerSymbol))>=0)
+			position=temp;
 		
-		else if(checkBlockingPosition(userSymbol)>=0) {
-			position=checkBlockingPosition(userSymbol);	
+		else if((temp=checkBlockingPosition(userSymbol))>=0) {
+			position=temp;	
 		}
-		else if(getCorner()>=0 && getCorner()<=8)
-			position=getCorner();
-		else if(getCentre()>0)
-			position=getCentre();
+		else if((temp=getCorner())>=0)
+			position=temp;
+		else if((temp=getCentre())>0)
+			position=temp;
 		else {
 			ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
 			for(int i=0;i<board.length;i++) {
@@ -164,38 +165,43 @@ public class TicTacToe {
 	}
 	//check for blocking condition....
 	private int checkBlockingPosition(char symbol) {
-		if(board[0]=='.' &&  board[1]==symbol &&  board[2]==symbol ||
-				board[0]=='.' &&  board[3]==symbol  && board[6]==symbol||
-				board[0]=='.' &&  board[4]==symbol &&  board[8]==symbol)
-		return 0;
-		if(board[0]==symbol && board[1]=='.' && board[2]==symbol ||
-				board[1]=='.' && board[4]==symbol && board[7]==symbol)
-		return 1;
-		if(board[0]==symbol && board[1]==symbol && board[2]=='.'||
-				board[2]=='.' && board[5]==symbol && board[8]==symbol)
-		return 2;
-		if(board[0]==symbol && board[3]=='.' && board[6]==symbol ||
-				board[3]=='.' && board[4]==symbol && board[5]==symbol)
-		return 3;
+		
+		if((board[0]=='.' &&  board[1]==symbol &&  board[2]==symbol) ||
+				(board[0]=='.' &&  board[3]==symbol  && board[6]==symbol)||
+				(board[0]=='.' &&  board[4]==symbol &&  board[8]==symbol))
+			return 0;
+		
+		if((board[0]==symbol && board[1]=='.' && board[2]==symbol) ||
+				(board[1]=='.' && board[4]==symbol && board[7]==symbol))
+			return 1;
+		
+		if((board[0]==symbol && board[1]==symbol && board[2]=='.') ||
+				(board[2]=='.' && board[5]==symbol && board[8]==symbol))
+			return 2;
+		
+		if((board[0]==symbol && board[3]=='.' && board[6]==symbol) ||
+				(board[3]=='.' && board[4]==symbol && board[5]==symbol))
+			return 3;
+		
 		if ((board[1] == symbol && board[7] ==symbol) || (board[3] == symbol && board[5] == symbol) || (board[0] == symbol && board[8] == symbol)
-				|| (board[2] == symbol && board[6] == symbol) && board[4]=='.') {
-				return 4;
+				|| (board[2] == symbol && board[6] == symbol)) {
+			if(board[4]=='.') return 4;
 		}
 
-		if ((board[2] == symbol && board[8] == symbol) || (board[3] == symbol && board[4] == symbol) && board[5]=='.') {
-				return 5;
+		if ((board[2] == symbol && board[8] == symbol) || (board[3] == symbol && board[4] == symbol)) {
+			if(board[5]=='.') return 5;
 		}
 
-		if ((board[0] == symbol && board[3] ==symbol ) || (board[7] == symbol && board[8] == symbol) || (board[4] == symbol && board[2] == symbol) && board[6]=='.') {
-				return 6;
+		if ((board[0] == symbol && board[3] ==symbol ) || (board[7] == symbol && board[8] == symbol) || (board[4] == symbol && board[2] == symbol)) {
+			 if(board[6]=='.')	return 6;
 		}
 
-		if ((board[1] == symbol && board[4] == symbol) || (board[6] == symbol && board[8] == symbol) && board[7]=='.') {
-				return 7;
+		if ((board[1] == symbol && board[4] == symbol) || (board[6] == symbol && board[8] == symbol)) {
+			if(board[7]=='.')	return 7;
 		}
 
-		if ((board[6] == symbol && board[7] == symbol) || (board[2] == symbol && board[5] == symbol) || (board[4] == symbol && board[0] == symbol) && board[8]=='.') {
-				return 8;
+		if ((board[6] == symbol && board[7] == symbol) || (board[2] == symbol && board[5] == symbol) || (board[4] == symbol && board[0] == symbol)) {
+			if(board[8]=='.')	return 8;
 		}
 		
 		return -1;
@@ -206,71 +212,75 @@ public class TicTacToe {
 		
 		TicTacToe game = new TicTacToe();
 		
-		game.initializeGame();
-		System.out.println("Tossing for who plays first");
-	    PLAYER tossWinner=game.doToss();
-	    
-	    boolean userMoveResult,computerMoveResult;
-	    if(tossWinner==PLAYER.USER) {
-	    	game.takeInput(PLAYER.USER);
-	    	while(true) {
-	    		if(game.allFill())
-				{
-					System.out.println("Match draws");
-					return;
-				}
-	    		int position;
-	    		do {
-		    	System.out.println("Enter position(1-9)");
-			    position=s.nextInt();
-			    if(game.allFill())break;
-	    		}while(!game.validMove(position));
-	    		
-			    userMoveResult=game.userMakeMove(position);
-			    System.out.println("After user turn");
-				game.showBoard();
-				if(userMoveResult)
-					break;
-				
-				computerMoveResult=game.computerMakeMove();
-				System.out.println("After computer turn");
-				game.showBoard();
-				if(computerMoveResult)
-					break;
-				
-	    	}
-	    }
-	    else {
-	    	game.takeInput(PLAYER.COMPUTER);
-	    	while(true) {
-	    		if(game.allFill())
-				{
-					System.out.println("Match draws");
-					break;
-				}
-				computerMoveResult=game.computerMakeMove();
-				System.out.println("After computer turn");
-				game.showBoard();
-				if(computerMoveResult)
-					break;
-				int position=0;
-				
-				do {
-				System.out.println("Enter position(1-9) ");
-		        position=s.nextInt();
-		        if(game.allFill())break;
-				}while(!game.validMove(position));
-				
-	
-				userMoveResult=game.userMakeMove(position);
-				System.out.println("After user turn");
-				game.showBoard();
-				if(userMoveResult)
-					break;
-				
-				
+		outer :
+		do {
+			game.initializeGame();
+			System.out.println("Tossing for who plays first");
+		    PLAYER tossWinner=game.doToss();
+		    
+		    boolean userMoveResult,computerMoveResult;
+		    if(tossWinner==PLAYER.USER) {
+		    	game.takeInput(PLAYER.USER);
+		    	while(true) {
+		    		if(game.allFill())
+					{
+						System.out.println("Match draws");
+						continue outer;
+					}
+		    		int position;
+		    		do {
+			    	System.out.println("Enter position(1-9)");
+				    position=s.nextInt();
+				    if(game.allFill())break;
+		    		}while(!game.validMove(position));
+		    		
+				    userMoveResult=game.userMakeMove(position);
+				    System.out.println("After user turn");
+					game.showBoard();
+					if(userMoveResult)
+						break;
+					
+					computerMoveResult=game.computerMakeMove();
+					System.out.println("After computer turn");
+					game.showBoard();
+					if(computerMoveResult)
+						break;
+					
+		    	}
 		    }
-	    }
+		    else {
+		    	game.takeInput(PLAYER.COMPUTER);
+		    	while(true) {
+		    		if(game.allFill())
+					{
+						System.out.println("Match draws");
+						continue outer;
+					}
+					computerMoveResult=game.computerMakeMove();
+					System.out.println("After computer turn");
+					game.showBoard();
+					if(computerMoveResult)
+						break;
+					int position=0;
+					
+					do {
+					System.out.println("Enter position(1-9) ");
+			        position=s.nextInt();
+			        if(game.allFill())break;
+					}while(!game.validMove(position));
+					
+		
+					userMoveResult=game.userMakeMove(position);
+					System.out.println("After user turn");
+					game.showBoard();
+					if(userMoveResult)
+						break;
+					
+					
+			    }
+		    }
+		    System.out.println("Do you wish to play another game(yes/no)");
+		}while(s.next().equals("yes"));
 	    s.close();
 	}
 }
