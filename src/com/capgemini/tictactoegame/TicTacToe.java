@@ -74,16 +74,24 @@ public class TicTacToe {
 
 	//computer makes move and checking if it wins
 	private boolean computerMakeMove() {
-		ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
-		for(int i=0;i<board.length;i++) {
-			if(board[i]=='.')
-				emptyPositions.add(i);
-		}
-		if(emptyPositions.size()==0)
-			return false;
 		
-		int randomIndex = (int) (Math.random() * emptyPositions.size());
-		int position=emptyPositions.get( randomIndex );
+		int blockingPosition=checkBlockingPosition();
+		int position=-1;
+		
+		if(blockingPosition>=0 && blockingPosition<=8)
+			position=blockingPosition;
+		else {
+			ArrayList<Integer> emptyPositions=new ArrayList<Integer>();
+			for(int i=0;i<board.length;i++) {
+				if(board[i]=='.')
+					emptyPositions.add(i);
+			}
+			if(emptyPositions.size()==0)
+				return false;
+			
+			int randomIndex = (int) (Math.random() * emptyPositions.size());
+		    position=emptyPositions.get( randomIndex );
+		}
 		board[position]=computerSymbol;
 		
 		if(checkWinner(computerSymbol)) {
@@ -132,6 +140,46 @@ public class TicTacToe {
 				return false;
 		System.out.println("Entire board is filled");
 		return true;
+	}
+	
+	//check for blocking condition....
+	private int checkBlockingPosition() {
+		if(board[0]=='.' && board[1]==userSymbol && board[2]==userSymbol ||
+				board[0]=='.' && board[3]==userSymbol && board[6]==userSymbol||
+				board[0]=='.' && board[4]==userSymbol && board[8]==userSymbol)
+		return 0;
+		if(board[0]==userSymbol && board[1]=='.' && board[2]==userSymbol ||
+				board[1]=='.' && board[4]==userSymbol && board[7]==userSymbol)
+		return 1;
+		if(board[0]==userSymbol && board[1]==userSymbol && board[2]=='.'||
+				board[2]=='.' && board[5]==userSymbol && board[8]==userSymbol)
+		return 2;
+		if(board[0]==userSymbol && board[3]=='.' && board[6]==userSymbol ||
+				board[3]=='.' && board[4]==userSymbol && board[5]==userSymbol)
+		return 3;
+		if ((board[1] == userSymbol && board[7] == userSymbol) || (board[3] == userSymbol && board[5] == userSymbol) || (board[0] == userSymbol && board[8] == userSymbol)
+				|| (board[2] == userSymbol && board[6] == userSymbol) && board[4]=='.') {
+				return 4;
+		}
+
+		if ((board[2] == userSymbol && board[8] == userSymbol) || (board[3] == userSymbol && board[4] == userSymbol) && board[5]=='.') {
+				return 5;
+		}
+
+		if ((board[0] == userSymbol && board[3] ==userSymbol ) || (board[7] == userSymbol && board[8] == userSymbol) || (board[4] == userSymbol && board[2] == userSymbol) && board[6]=='.') {
+				return 6;
+		}
+
+		if ((board[1] == userSymbol && board[4] == userSymbol) || (board[6] == userSymbol && board[8] == userSymbol) && board[7]=='.') {
+				return 7;
+		}
+
+		if ((board[6] == userSymbol && board[7] == userSymbol) || (board[2] == userSymbol && board[5] == userSymbol) || (board[4] == userSymbol && board[0] == userSymbol) && board[8]=='.') {
+				return 8;
+		}
+		
+		return -1;
+		
 	}
 
 	public static void main(String[] args) {
